@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 use Whoops\Run;
 
@@ -31,8 +32,16 @@ Route::prefix('category')->middleware(['auth'])->controller(CategoryController::
     Route::get('/{id}', 'edit')->name('category.edit');
     Route::put('/{id}', 'update')->name('category.update');
     Route::delete('/{id}', 'destroy')->name('category.delete');
+});
 
-
+Route::prefix('venue')->middleware(['auth'])->controller(VenueController::class)->group(function()
+{
+    Route::get('/','index')->name('venue.index');
+    Route::get('/create', 'create' )->name('venue.create');
+    Route::post('/', 'store')->name('venue.store');
+    Route::get('/{id}', 'edit')->name('venue.edit');
+    Route::put('/{id}', 'update')->name('venue.update');
+    Route::delete('/{id}', 'destroy')->name('venue.delete');
 });
 
 require __DIR__.'/auth.php';
