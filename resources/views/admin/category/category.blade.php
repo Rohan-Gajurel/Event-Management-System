@@ -42,10 +42,10 @@
                         </button>
                     </a>
 
-                    <form action="{{ route('category.delete', $category->id) }}" method="POST">
+                    <form action="{{ route('category.delete', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit"
+                        <button type="submit" 
                             class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
                             Delete
                         </button>
