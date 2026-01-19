@@ -4,8 +4,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\Organizer;
 use Illuminate\Support\Facades\Route;
 use Whoops\Run;
 
@@ -44,7 +46,7 @@ Route::prefix('venue')->middleware(['auth'])->controller(VenueController::class)
     Route::delete('/{id}', 'destroy')->name('venue.delete');
 });
 
-Route::prefix('event')->middleware(['auth'])->controller(EventController::class)->group(function()
+Route::prefix('event')->middleware(['auth','verified'])->controller(EventController::class)->group(function()
 {
     Route::get('/','index')->name('event.index');
     Route::get('/create', 'create' )->name('event.create');
@@ -52,7 +54,7 @@ Route::prefix('event')->middleware(['auth'])->controller(EventController::class)
     Route::get('/{id}', 'edit')->name('event.edit');
     Route::put('/{id}', 'update')->name('event.update');
     Route::delete('/{id}', 'destroy')->name('event.delete');
-    Route::get('/', 'front_index')->name('event.front_index');
+    
 });
 
 Route::prefix('user')->middleware(['auth'])->controller(UserController::class)->group(function()
@@ -65,21 +67,26 @@ Route::prefix('user')->middleware(['auth'])->controller(UserController::class)->
 
 Route::get('/dashboard', function () {
     return redirect(route("event.index"));
-})->middleware(['auth'])->name('dashboard');
+})->middleware(Organizer::class)->name('dashboard');
 
 Route::prefix('ticket')->middleware(['auth'])->controller(TicketController::class)->group(function()
 {
     Route::get('/','index')->name('ticket.index');
     Route::get('/create', 'create' )->name('ticket.create');
-    Route::post('/', 'store')->name('ticket.store');
+    Route::post('/{id}', 'store')->name('ticket.store');
     Route::get('/{id}', 'edit')->name('ticket.edit');
     Route::put('/{id}', 'update')->name('ticket.update');
     Route::delete('/{id}', 'destroy')->name('ticket.delete');
 });
 
-Route::get('/', function () {
-    return redirect(route("event.front_index"));
+
+Route::prefix('/')->controller(EventController::class)->group(function()
+{
+    Route::get('/','front_index')->name('event_list.index');
+    Route::get('event-detail/{id}','event_detail')->name('event.detail');
+    
 });
 
+// Route::get('send-mail', [MailController::class, 'index'] );
 
 require __DIR__.'/auth.php';

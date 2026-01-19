@@ -33,10 +33,10 @@
             
             <td class="border p-2">{{$i}}</td>
             <td class="border p-2">{{$ticket->user->name}}</td>
-            <td class="border p-2">{{$ticket->user->event}}</td>
+            <td class="border p-2">{{$ticket->event->name}}</td>
             <td class="border p-2">{{$ticket->quantity}}</td>
             <td class="border p-2">{{$ticket->price}}</td>
-            <td class="border p-2">{{$ticket->quantity}}</td>
+            <td class="border p-2">{{$ticket->total_amount}}</td>
 
             <td class="border p-2">
                 <div class="flex gap-2">

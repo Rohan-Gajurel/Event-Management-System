@@ -103,4 +103,9 @@ class EventController extends Controller
         return view('frontend.home', compact('events'));
     }
 
+    public function event_detail($id)
+    {
+        $event=Event::findOrFail($id);
+        return view('frontend.detail', compact('event'));
+    }
 }
