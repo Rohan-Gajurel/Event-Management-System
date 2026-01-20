@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TicketMail;
 use App\Models\Event;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
+use Illuminate\Support\Facades\Mail;
 
 class TicketController extends Controller
 {
@@ -34,6 +36,7 @@ class TicketController extends Controller
         $ticket->user_id=Auth::user()->id;
         $ticket->save();
 
+        Mail::to($request->user())->send(new TicketMail($ticket));
         return redirect(route('event.detail',$id))->with('success','Ticket created successfully'); 
     }
     
