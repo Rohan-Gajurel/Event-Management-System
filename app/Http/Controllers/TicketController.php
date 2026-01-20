@@ -39,5 +39,31 @@ class TicketController extends Controller
         Mail::to($request->user())->send(new TicketMail($ticket));
         return redirect(route('event.detail',$id))->with('success','Ticket created successfully'); 
     }
-    
+
+    public function edit($id)
+    {
+        $ticket=Ticket::findOrFail($id);
+        return view('admin.ticket.edit_ticket', compact('ticket'));
+
+    }
+
+    public function update(Request $request, $id){
+        $ticket=Ticket::findOrFail($id);
+        $request->validate(
+            [
+                "quantity"=>"required|integer",
+            ]
+        );
+        $ticket->quantity=$request->quantity;
+        $price=$ticket->price;
+        $ticket->total_amount=$price*$request->quantity;
+        $ticket->update();
+        return redirect(route('ticket.index'))->with('update_message','Ticket updated successfully'); 
+    }
+
+    public function destroy($id){
+        $ticket=Ticket::findOrFail($id);
+        $ticket->delete();
+        return redirect(route('ticket.index'))->with('delete_message','Ticket deleted successfully'); 
+    }
 }
