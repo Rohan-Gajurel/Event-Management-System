@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Ticket;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -97,15 +98,26 @@ class EventController extends Controller
         return redirect(route('event.index'))->with('delete_message','Event deleted successfully');
     }
 
-    public function front_index()
+    public function event_index()
     {
-        $events=Event::all();
+        $events=Event::where('date','>', now())->get();
         return view('frontend.home', compact('events'));
     }
 
     public function event_detail($id)
     {
         $event=Event::findOrFail($id);
-        return view('frontend.detail', compact('event'));
+        $tickets_sold=Ticket::where('event_id',$id)->sum('quantity');
+
+        
+        return view('frontend.detail', compact('event','tickets_sold'));
     }
+
+    public function all_event_index()
+    {
+        $events=Event::all();
+        return view('frontend.event', compact('events'));
+    }
+
+    
 }

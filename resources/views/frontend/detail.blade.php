@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Event Details</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+@extends('frontend.layout')
+@section("content")
   @if (session('success'))
     <div class="bg-green-400 text-sm text-white rounded-md p-4" role="alert">
         <span class="font-bold">{{ session('success')}}</span> 
@@ -24,6 +18,7 @@
 
       <!-- Ticket Booking Form -->
       @auth
+      @if( $event->date>now() )
       <form action="{{route('ticket.store', $event->id)}}" class="space-y-4" method="POST">
         @csrf
         <label class="block">
@@ -32,6 +27,10 @@
         </label>
         <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded">Book Now</button>
       </form>
+      @else
+          
+      <p>Total Ticket Sold: {{$tickets_sold}}</p>
+      @endif
       @else
       <p>
         Create Account to Buy Ticket <a href="{{ route('register') }}" class="px-6 py-2 bg-blue-600 text-white rounded">Register</a>
@@ -43,5 +42,4 @@
     </div>
   </section>
 
-</body>
-</html>
+@endsection

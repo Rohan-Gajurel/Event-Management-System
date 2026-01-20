@@ -18,7 +18,7 @@ class Organizer
     {
         $user=Auth::user();
         if($user->role !=='organizer'){
-            return redirect(route('event_list.index'));
+            return redirect(route('event_list'));
         }
         return $next($request);
     }

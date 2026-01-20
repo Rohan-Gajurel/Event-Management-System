@@ -82,8 +82,9 @@ Route::prefix('ticket')->middleware(['auth'])->controller(TicketController::clas
 
 Route::prefix('/')->controller(EventController::class)->group(function()
 {
-    Route::get('/','front_index')->name('event_list.index');
+    Route::get('/','event_index')->name('event_list');
     Route::get('event-detail/{id}','event_detail')->name('event.detail');
+    Route::get('/all-event','all_event_index')->name('all_event_list');
     
 });
 

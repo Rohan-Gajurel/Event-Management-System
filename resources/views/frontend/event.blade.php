@@ -1,15 +1,9 @@
 @extends('frontend.layout')
 @section("content")
-  <!-- Hero Section -->
-  <section class="text-center py-12 bg-blue-50">
-    <h1 class="text-4xl font-bold mb-4">Discover Amazing Events</h1>
-    <p class="text-gray-700 mb-6">Find events by category, venue, and organizers</p>
-    <a href="{{ route('all_event_list') }}" class="px-6 py-2 bg-blue-600 text-white rounded">Browse Events</a>
-  </section>
 
   <!-- Event Listing -->
   <section id="events" class="py-12 container mx-auto">
-    <h2 class="text-3xl font-bold mb-6">Upcoming Events</h2>
+    <h2 class="text-3xl font-bold mb-6">All Events</h2>
     <div class="grid md:grid-cols-3 gap-6">
       
       <!-- Event Card Example -->
@@ -31,3 +25,4 @@
   </section>
 
 @endsection
+
