@@ -34,9 +34,10 @@ class EventController extends Controller
                 "venue"=>"required",
                 "category"=>"required",
                 "price"=>"required",
+                "status"=>"required|in:published,unpublished",
                 "image"=>"nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
             ]);
-
+        
         $imagePath=null;
         if($request->hasFile("image")){
             $imagePath=$request->file('image')->store('event_image', 'public');
@@ -47,6 +48,7 @@ class EventController extends Controller
         $event->date=$request->date;
         $event->venue_id=$request->venue;
         $event->category_id=$request->category;
+        $event->status=$request->satus;
         $event->price=$request->price;
         $event->image=$imagePath;
         $event->save();
@@ -62,10 +64,6 @@ class EventController extends Controller
 
     public function update(Request $request, $id){
         $event=Event::findOrFail($id);
-        if($event->image){
-            Storage::disk('public')->delete($event->image);
-        }
-
         $request->validate(    [
                 "event_name"=>"required",
                 "description"=>"required",
@@ -73,6 +71,7 @@ class EventController extends Controller
                 "venue"=>"required",
                 "category"=>"required",
                 "price"=>"required",
+                "status"=>"required|in:published,unpublished",
                 "image"=>"nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
             ]);
 
@@ -86,8 +85,11 @@ class EventController extends Controller
         $event->date=$request->date;
         $event->venue_id=$request->venue;
         $event->category_id=$request->category;
+        $event->status=$request->status;
         $event->price=$request->price;
-        $event->image=$imagePath;
+        if($imagePath){
+            $event->image=$imagePath;
+        }
         $event->update();
         return redirect(route('event.index'))->with('update_message','Event updated successfully');
     }
@@ -100,7 +102,7 @@ class EventController extends Controller
 
     public function event_index()
     {
-        $events=Event::where('date','>', now())->get();
+        $events=Event::where('date','>', now())->where('status','published')->get();
         return view('frontend.home', compact('events'));
     }
 
@@ -115,7 +117,7 @@ class EventController extends Controller
 
     public function all_event_index()
     {
-        $events=Event::all();
+        $events=Event::where('status','published')->get();
         return view('frontend.event', compact('events'));
     }
 

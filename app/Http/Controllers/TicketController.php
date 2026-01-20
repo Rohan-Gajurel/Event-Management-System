@@ -66,4 +66,11 @@ class TicketController extends Controller
         $ticket->delete();
         return redirect(route('ticket.index'))->with('delete_message','Ticket deleted successfully'); 
     }
+
+    public function show_form($id)
+    {
+        $event=Event::findOrFail($id);
+        return view('frontend.ticket-form', compact('event'));
+    }
+
 }

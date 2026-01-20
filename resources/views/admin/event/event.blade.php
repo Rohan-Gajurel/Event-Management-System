@@ -24,7 +24,7 @@
           <tr>
             <th class="border p-2">SN</th>
             <th class="border p-2">Name</th>
-            <th class="border p-2">Description</th>
+            <th class="border p-2">Satus</th>
             <th class="border p-2">Date</th>
             <th class="border p-2">Venue</th>
             <th class="border p-2">Category</th>
@@ -40,7 +40,7 @@
             
             <td class="border p-2">{{$i}}</td>
             <td class="border p-2">{{$event->name}}</td>
-            <td class="border p-2">{{$event->description }}</td>
+            <td class="border p-2">{{$event->status }}</td>
             <td class="border p-2">{{$event->date}}</td>
             <td class="border p-2">{{$event->venue->name}}</td>
             <td class="border p-2">{{$event->category->name}}</td>

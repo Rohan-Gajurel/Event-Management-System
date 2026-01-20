@@ -85,7 +85,10 @@ Route::prefix('/')->controller(EventController::class)->group(function()
     Route::get('/','event_index')->name('event_list');
     Route::get('event-detail/{id}','event_detail')->name('event.detail');
     Route::get('/all-event','all_event_index')->name('all_event_list');
-    
+});
+
+Route::prefix('/')->controller(TicketController::class)->group(function(){
+    Route::get('ticket-form/{id}','show_form')->name('ticket-form');
 });
 
 // Route::get('send-mail', [MailController::class, 'index'] );

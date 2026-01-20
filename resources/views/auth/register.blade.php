@@ -51,32 +51,88 @@
     </form> --}}
 
     <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
-    <form action="{{ route('register') }}" method="POST" class="space-y-4">
+
+
+    <form action="{{ route('register') }}" method="POST" class="space-y-5">
         @csrf
+
+        <!-- Name -->
         <div>
-            <input type="text" name="name" id="name" placeholder="Full Name" class="w-full p-3 border rounded">
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value="{{ old('name') }}"
+                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+            >
+            <x-input-error :messages="$errors->get('name')" class="mt-1" />
         </div>
 
+        <!-- Email -->
         <div>
-            <input type="email" name="email" id="email" placeholder="Email" class="w-full p-3 border rounded">
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value="{{ old('email') }}"
+                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+            >
+            <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
+        <!-- Password -->
         <div>
-            <input type="password" name="password" id="password" placeholder="Password" class="w-full p-3 border rounded">
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+            >
+            <x-input-error :messages="$errors->get('password')" class="mt-1" />
         </div>
 
+        <!-- Confirm Password -->
         <div>
-            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" class="w-full p-3 border rounded">
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-
+            <input
+                type="password"
+                name="password_confirmation"
+                placeholder="Confirm Password"
+                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+            >
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
         </div>
 
-        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition">Register</button>
+        <!-- Role -->
+        <div>
+            <select
+                name="role"
+                required
+                class="w-full rounded-lg border-gray-300 p-3 bg-white focus:border-green-500 focus:ring-green-500"
+            >
+                <option value="" disabled selected>Select Role</option>
+                <option value="organizer" >
+                    Organizer
+                </option>
+                <option value="participant" >
+                    Participant
+                </option>
+            </select>
+            <x-input-error :messages="$errors->get('role')" class="mt-1" />
+        </div>
+
+        <!-- Submit -->
+        <button
+            type="submit"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
+        >
+            Register
+        </button>
     </form>
-    <p class="mt-4 text-center">Already have an account? 
-    <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login</a>
+
+    <p class="mt-6 text-center text-sm">
+        Already have an account?
+        <a href="{{ route('login') }}" class="text-green-600 hover:underline font-medium">
+            Login
+        </a>
     </p>
 </x-guest-layout>

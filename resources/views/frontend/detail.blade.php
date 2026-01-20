@@ -17,26 +17,9 @@
       <p class="text-gray-600 mb-6">Description: {{$event->description}}</p>
 
       <!-- Ticket Booking Form -->
-      @auth
-      @if( $event->date>now() )
-      <form action="{{route('ticket.store', $event->id)}}" class="space-y-4" method="POST">
-        @csrf
-        <label class="block">
-          <span class="text-gray-700">Number of Tickets</span>
-          <input type="number" min="1" id="quantity" name="quantity" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
-        </label>
-        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded">Book Now</button>
-      </form>
-      @else
-          
-      <p>Total Ticket Sold: {{$tickets_sold}}</p>
+      @if($event->date < now())
+          <p>Total Ticket Sold: {{$tickets_sold}}</p>
       @endif
-      @else
-      <p>
-        Create Account to Buy Ticket <a href="{{ route('register') }}" class="px-6 py-2 bg-blue-600 text-white rounded">Register</a>
-      </p>
-      @endauth
-
       
       
     </div>

@@ -29,6 +29,11 @@
           <option value={{ $venue->id }}>{{ $venue->name }}
           @endforeach
         </select>
+        <select class="p-3 border rounded" name="status">
+          <option selected disabled>Status</option>
+            <option value="published">Published </option>
+            <option value="unpublished">UnPublished </option>
+        </select>
         <input type="number" placeholder="Price" class="p-3 border rounded" name="price">
         <input type="file" placeholder="Image" class="p-3 border rounded" name="image">
         <button class="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition col-span-full">Add Event</button>
