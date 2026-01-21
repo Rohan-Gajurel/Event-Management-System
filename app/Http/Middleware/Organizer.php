@@ -17,8 +17,8 @@ class Organizer
     public function handle(Request $request, Closure $next): Response
     {
         $user=Auth::user();
-        if($user->role !=='organizer'){
-            return redirect(route('event_list'));
+        if($user->role == 'admin'or'organizer'){
+            return redirect(route('event.index'));
         }
         return $next($request);
     }

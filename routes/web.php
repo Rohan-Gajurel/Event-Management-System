@@ -5,10 +5,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Organizer;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Socialite;
 use Whoops\Run;
 
 
@@ -26,7 +30,7 @@ Route::middleware('auth')->group(function () {
 //     return view('admin.layout');
 // })->middleware(['auth'])->name('dashboard');
 
-Route::prefix('category')->middleware(['auth'])->controller(CategoryController::class)->group(function()
+Route::prefix('category')->middleware(['auth','verified'])->controller(CategoryController::class)->group(function()
 {
     Route::get('/','index')->name('category.index');
     Route::get('/create', 'create' )->name('category.create');
@@ -36,7 +40,7 @@ Route::prefix('category')->middleware(['auth'])->controller(CategoryController::
     Route::delete('/{id}', 'destroy')->name('category.delete');
 });
 
-Route::prefix('venue')->middleware(['auth'])->controller(VenueController::class)->group(function()
+Route::prefix('venue')->middleware(['auth','verified'])->controller(VenueController::class)->group(function()
 {
     Route::get('/','index')->name('venue.index');
     Route::get('/create', 'create' )->name('venue.create');
@@ -57,7 +61,7 @@ Route::prefix('event')->middleware(['auth','verified'])->controller(EventControl
     
 });
 
-Route::prefix('user')->middleware(['auth'])->controller(UserController::class)->group(function()
+Route::prefix('user')->middleware(['auth','verified'])->controller(UserController::class)->group(function()
 {
     Route::get('/','index')->name('user.index');
     Route::get('/{id}', 'edit')->name('user.edit');
@@ -92,5 +96,11 @@ Route::prefix('/')->controller(TicketController::class)->group(function(){
 });
 
 // Route::get('send-mail', [MailController::class, 'index'] );
+Route::controller(SocialiteController::class)->group(function(){
+    Route::get('auth/redirection/{provider}','authProviderRediect')->name('auth.redirection');
+    Route::get('auth/{provider}/callback','socialAuthentication')->name('auth.callback');
+
+});
+
 
 require __DIR__.'/auth.php';

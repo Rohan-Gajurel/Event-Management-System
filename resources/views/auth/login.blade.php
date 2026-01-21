@@ -61,6 +61,9 @@
 
         <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition">Login</button>
         </form>
+            <a href="{{ route('auth.redirection','google') }}" class="inline-block"><img src="{{ asset('build/assets/gogole-logo.jpg') }}" alt="" height="50" width="50"></a>
+            <a href="{{ route('auth.redirection','facebook') }}" class="inline-block rounded"><img src="{{ asset('build/assets/facebook-logo.jpg') }}" alt="" height="50" width="50"></a>
+
         <p class="mt-4 text-center">Don't have an account? 
             <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Register</a>
         </p>

@@ -52,7 +52,6 @@
 
     <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
 
-
     <form action="{{ route('register') }}" method="POST" class="space-y-5">
         @csrf
 
@@ -128,6 +127,8 @@
             Register
         </button>
     </form>
+        <a href="{{ route('auth.redirection','google') }}" class="inline-block"><img src="{{ asset('build/assets/gogole-logo.jpg') }}" alt="" height="50" width="50"></a>
+        <a href="{{ route('auth.redirection','facebook') }}" class="inline-block rounded"><img src="{{ asset('build/assets/facebook-logo.jpg') }}" alt="" height="50" width="50"></a>
 
     <p class="mt-6 text-center text-sm">
         Already have an account?
