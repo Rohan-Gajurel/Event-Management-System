@@ -5,9 +5,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\Admin;
 use App\Http\Middleware\Organizer;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +63,7 @@ Route::prefix('event')->middleware(['auth','verified'])->controller(EventControl
     
 });
 
-Route::prefix('user')->middleware(['auth','verified'])->controller(UserController::class)->group(function()
+Route::prefix('user')->middleware(['auth','verified','admin'])->controller(UserController::class)->group(function()
 {
     Route::get('/','index')->name('user.index');
     Route::get('/{id}', 'edit')->name('user.edit');
@@ -102,5 +104,14 @@ Route::controller(SocialiteController::class)->group(function(){
 
 });
 
+Route::prefix('organizer')->middleware(['auth'])->controller(OrganizerController::class)->group(function () {
+    Route::get('/','index')->name('organizer.index');
+    Route::get('/create', 'create' )->name('organizer.create');
+    Route::post('/', 'store')->name('organizer.store');
+    Route::get('/{id}', 'edit')->name('organizer.edit');
+    Route::put('/{id}', 'update')->name('organizer.update');
+    Route::delete('/{id}', 'destroy')->name('organizer.delete');
+    Route::get('/front','front')->name('organizer.front');
+});
 
 require __DIR__.'/auth.php';

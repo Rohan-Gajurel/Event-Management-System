@@ -17,9 +17,10 @@
       @method('PUT')
         <input type="text" placeholder="Name" class="p-3 border rounded" value={{ $user->name }} readonly>
         <select class="p-3 border rounded" name="role">
-          <option selected disabled>Category</option>
+          <option selected disabled>Role</option>
             <option value="organizer" {{ $user->role=="organizer" ? 'selected':'' }}>Organizer </option>
             <option value="participant" {{ $user->role=="participant" ? 'selected':'' }}>Partcipant </option>
+            <option value="admin" {{ $user->role=="admin" ? 'selected':'' }}>Admin </option>
         </select>
         <button class="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition col-span-full">Update Event</button>
       </form>

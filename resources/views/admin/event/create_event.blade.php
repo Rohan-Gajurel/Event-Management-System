@@ -29,11 +29,24 @@
           <option value={{ $venue->id }}>{{ $venue->name }}
           @endforeach
         </select>
+        @if(auth()->user()->role==="admin")
         <select class="p-3 border rounded" name="status">
           <option selected disabled>Status</option>
             <option value="published">Published </option>
-            <option value="unpublished">UnPublished </option>
+            <option value="unpublished">Unpublished </option>
         </select>
+        <select class="p-3 border rounded" name="user_id" required>
+        <option disabled selected>Select User</option>
+        @foreach ($organizers as $organizer)
+          <option value="{{ $organizer->id }}">{{ $organizer->user->name }}</option>
+        @endforeach
+      </select>
+        @endif
+
+        @if(auth()->user()->role === 'organizer')
+          <input type="number" name="user_id" value="{{ auth()->user()->organizer->id}}" >
+        @endif
+
         <input type="number" placeholder="Price" class="p-3 border rounded" name="price">
         <input type="file" placeholder="Image" class="p-3 border rounded" name="image">
         <button class="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition col-span-full">Add Event</button>

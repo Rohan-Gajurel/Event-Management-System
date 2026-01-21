@@ -3,8 +3,8 @@
 
     <div class="bg-white p-6 rounded-lg shadow">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">All Event</h2>
-        <a href="{{ route('event.create') }}" ><button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-800">Create</button></a>
+        <h2 class="text-xl font-semibold">All Organizer</h2>
+        <a href="{{ route('organizer.create') }}" ><button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-800">Create</button></a>
       </div>
        @if (session('success'))
     <div class="bg-green-400 text-sm text-white rounded-md p-4" role="alert">
@@ -24,41 +24,29 @@
           <tr>
             <th class="border p-2">SN</th>
             <th class="border p-2">Name</th>
-            <th class="border p-2">Satus</th>
-            <th class="border p-2">Organizer</th>
-            <th class="border p-2">Date</th>
-            <th class="border p-2">Venue</th>
-            <th class="border p-2">Category</th>
-            <th class="border p-2">Image</th>
-            <th class="border p-2">Price</th>
+            <th class="border p-2">Type</th>
+            <th class="border p-2">Address</th>
             <th class="border p-2">Actions</th>
           </tr>
         </thead>
         <tbody>
         <?php $i=1; ?> 
-         @foreach ($events as $event )
+         @foreach ($organizers as $organizer )
           <tr>
             
             <td class="border p-2">{{$i}}</td>
-            <td class="border p-2">{{$event->name}}</td>
-            <td class="border p-2">{{$event->status }}</td>
-            <td class="border p-2">{{$event->organizer->user->name }}</td>
-            <td class="border p-2">{{$event->date}}</td>
-            <td class="border p-2">{{$event->venue->name}}</td>
-            <td class="border p-2">{{$event->category->name}}</td>
-            <td class="border p-2"><img src={{asset('storage/'.$event->image)  }} alt="Image not found" width="150">
-            </td>
-            <td class="border p-2">{{$event->price}}</td>
-
+            <td class="border p-2">{{$organizer->user->name}}</td>
+            <td class="border p-2">{{$organizer->type }}</td>
+            <td class="border p-2">{{$organizer->address}}</td>      
             <td class="border p-2">
                 <div class="flex gap-2">
-                    <a href="{{ route('event.edit', $event->id) }}">
+                    <a href="{{ route('organizer.edit', $organizer->id) }}">
                         <button class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
                             Edit
                         </button>
                     </a>
-
-                    <form action="{{ route('event.delete', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                    
+                    <form action="{{ route('organizer.delete', $organizer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit"  

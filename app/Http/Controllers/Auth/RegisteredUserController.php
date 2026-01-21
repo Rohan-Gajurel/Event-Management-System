@@ -46,7 +46,9 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
+        if(Auth::user()->role='organizer'){
+            return redirect(route('organizer.front'));
+        }
         return redirect(route('dashboard', absolute: false));
     }
 }

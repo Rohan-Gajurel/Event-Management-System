@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Organizer;
 use App\Models\Ticket;
+use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -20,7 +23,8 @@ class EventController extends Controller
     {
         $venues=Venue::all();
         $categories=Category::all();
-        return view('admin.event.create_event', compact('venues', 'categories'));
+        $organizers=Organizer::all();
+        return view('admin.event.create_event', compact('venues', 'categories','organizers'));
     }
 
     public function store(Request $request)
@@ -34,7 +38,8 @@ class EventController extends Controller
                 "venue"=>"required",
                 "category"=>"required",
                 "price"=>"required",
-                "status"=>"required|in:published,unpublished",
+                "user_id"=>'required',
+                "status"=>"in:published,unpublished",
                 "image"=>"nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
             ]);
         
@@ -42,14 +47,21 @@ class EventController extends Controller
         if($request->hasFile("image")){
             $imagePath=$request->file('image')->store('event_image', 'public');
         }
-        
+        if($request->status){
+            $event->status=$request->satus;
+        }
+        else{
+            $event->status="unpublished";
+        }
+
+
         $event->name=$request->event_name;
         $event->description=$request->description;
         $event->date=$request->date;
         $event->venue_id=$request->venue;
         $event->category_id=$request->category;
-        $event->status=$request->satus;
         $event->price=$request->price;
+        $event->organizer_id=$request->user_id;
         $event->image=$imagePath;
         $event->save();
         return redirect(route('event.index'))->with('success','Event created successfully');
