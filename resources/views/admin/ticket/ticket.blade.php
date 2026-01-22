@@ -23,6 +23,8 @@
             <th class="border p-2">Quantity</th>
             <th class="border p-2">Price</th>
             <th class="border p-2">Total Amount</th>
+            <th class="border p-2">Status</th>
+            <th class="border p-2">Image</th>
             <th class="border p-2">Actions</th>
           </tr>
         </thead>
@@ -37,7 +39,8 @@
             <td class="border p-2">{{$ticket->quantity}}</td>
             <td class="border p-2">{{$ticket->price}}</td>
             <td class="border p-2">{{$ticket->total_amount}}</td>
-
+            <td class="border p-2">{{$ticket->status}}</td>
+            <td class="border p-2"><img src={{asset('storage/'.$ticket->image)  }} alt="Image not found" width="150">
             <td class="border p-2">
                 <div class="flex gap-2">
                     <a href="{{ route('ticket.edit', $ticket->id) }}">

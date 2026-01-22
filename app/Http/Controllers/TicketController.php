@@ -13,7 +13,19 @@ class TicketController extends Controller
 {
     //
     public function index(){
-        $tickets=Ticket::all();
+        $tickets=null;
+        
+        if(Auth::user()->role==='admin')
+        {
+            $tickets=Ticket::all();
+        }
+        else
+        {
+            $organizer=Auth::user()->organizer->id;
+            $event=Event::where('organizer_id',$organizer)->pluck('id');
+            $tickets=Ticket::whereIn('event_id',$event)->get();
+        }
+        
         return view('admin.ticket.ticket', compact('tickets'));
     }
 
@@ -21,13 +33,19 @@ class TicketController extends Controller
         $ticket=new Ticket();
         $request->validate(
             [
-                "quantity"=>"required|integer",
+                "quantity"=>"required|integer|min:1",
+                "image" => "required|image|max:2048"
             ]
         );
         
         $event=Event::findOrFail($id);
+        $imagePath=null;
+        if($request->hasFile("image")){
+            $imagePath=$request->file('image')->store('payment_recpiet', 'public');
+        }
 
         $quantity=$request->quantity;
+        $ticket->image=$imagePath;
         $price=$event->price;
         $ticket->quantity=$request->quantity;
         $ticket->event_id=$id;
@@ -36,7 +54,7 @@ class TicketController extends Controller
         $ticket->user_id=Auth::user()->id;
         $ticket->save();
 
-        Mail::to($request->user())->send(new TicketMail($ticket));
+        
         return redirect(route('event.detail',$id))->with('success','Ticket created successfully'); 
     }
 
@@ -52,12 +70,20 @@ class TicketController extends Controller
         $request->validate(
             [
                 "quantity"=>"required|integer",
+                "status"=>"required|in:hold,released"
             ]
         );
+        
         $ticket->quantity=$request->quantity;
         $price=$ticket->price;
+        $ticket->status=$request->status;
         $ticket->total_amount=$price*$request->quantity;
         $ticket->update();
+
+        if($ticket->status=="released"){
+            Mail::to($request->user())->send(new TicketMail($ticket));
+        }
+
         return redirect(route('ticket.index'))->with('update_message','Ticket updated successfully'); 
     }
 

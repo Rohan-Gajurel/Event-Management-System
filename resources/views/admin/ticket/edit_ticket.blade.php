@@ -16,8 +16,13 @@
         @csrf
         @method('PUT')
         <input type="text"   class="p-3 border rounded" value={{ $ticket->user->name }} readonly>
-        <input type="text"  class="p-3 border rounded" value={{ $ticket->event->name }} redonly>
+        <input type="text"  class="p-3 border rounded" value={{ $ticket->event->name }} readonly>
         <input type="text" name="quantity" placeholder="Quantity" class="p-3 border rounded" value={{ $ticket->quantity }}>
+        <select class="p-3 border rounded" name="status">
+          <option selected disabled>Status</option>
+            <option value="hold" {{ $ticket->status=='hold'?'selected':'' }}>Hold</option>
+            <option value="released" {{ $ticket->status=='released'?'selected':'' }}>Released</option>
+        </select>
         <button type="submit" class="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition " >Edit quantity</button>
       </form>
     </div>

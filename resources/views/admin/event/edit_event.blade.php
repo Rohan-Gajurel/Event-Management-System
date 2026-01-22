@@ -30,10 +30,12 @@
           <option value={{ $venue->id }} {{ $event->venue_id==$venue->id ? 'selected':'' }}>{{ $venue->name }}
           @endforeach
         </select>
-        <select class="p-3 border rounded" name="status">
+        @if(auth()->user()->role==='admin')
+        <select class="p-3 border rounded" name="status" required>
             <option value="published" {{ $event->status=='published' ? 'selected':'' }}>Published </option>
             <option value="unpublished" {{ $event->status=='unpublished' ? 'selected':'' }}>Unpublished </option>
         </select>
+        @endif
         <input type="number" placeholder="Price" class="p-3 border rounded" name="price" value={{ $event->price }}>
         <img src={{asset('storage/'.$event->image)  }} alt="Image not found" width="150">
         <input type="file" placeholder="Image" class="p-3 border rounded" name="image">

@@ -24,7 +24,9 @@
           <tr>
             <th class="border p-2">SN</th>
             <th class="border p-2">Category</th>
+            @if(Auth::user()->role=="admin")
             <th class="border p-2">Actions</th>
+            @endif
           </tr>
         </thead>
         <tbody>
@@ -34,6 +36,7 @@
             
             <td class="border p-2">{{$i}}</td>
             <td class="border p-2">{{$category->name}}</td>
+            @if(Auth::user()->role=="admin")
             <td class="border p-2">
                 <div class="flex gap-2">
                     <a href="{{ route('category.edit', $category->id) }}">
@@ -52,6 +55,7 @@
                     </form>
                 </div>
             </td>
+            @endif
            
           </tr>
            <?php $i++ ?>

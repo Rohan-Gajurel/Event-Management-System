@@ -3,7 +3,16 @@
 <section class="container mx-auto py-12">
 <h1>{{$event->name}}</h1>
 <p>Price: {{$event->price}}</p>
-<form action="{{route('ticket.store', $event->id)}}" class="space-y-4" method="POST">
+@if($errors->any())
+            <div class="bg-red-100 text-sm text-red-700 rounded-md p-4 m-4" role="alert">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+<form action="{{route('ticket.store', $event->id)}}" class="space-y-4" method="POST" enctype="multipart/form-data">
         @csrf
         <span class="text-gray-700">Number of Tickets</span>
         <div class="inline-flex items-center border border-gray-300 rounded-lg overflow-hidden">
@@ -44,6 +53,13 @@
 </div>
     <p>Total Amount: <span id="total_price">{{$event->price}}</span>
     </p>
+    <label for="image">Payment Voucher:</label>
+    <input
+        id="image"
+        name="image"
+        type="file"
+    />
+    <br>
     <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded">Book Now</button>
 </form>
 <section>

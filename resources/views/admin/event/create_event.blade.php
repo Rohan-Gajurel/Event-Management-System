@@ -44,7 +44,13 @@
         @endif
 
         @if(auth()->user()->role === 'organizer')
-          <input type="number" name="user_id" value="{{ auth()->user()->organizer->id}}" >
+        <input
+            type="text"
+            placeholder="{{ auth()->user()->name }}"
+            class="border rounded p-3"
+            readonly
+        >
+        <input type="hidden" name="organizer_id" value="{{ auth()->user()->organizer->id }}">
         @endif
 
         <input type="number" placeholder="Price" class="p-3 border rounded" name="price">

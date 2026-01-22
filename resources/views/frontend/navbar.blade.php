@@ -20,7 +20,7 @@
               Logout
             </button>
           </form>
-            @if(Auth::user()->role=="organizer")
+            @if(Auth::user()->role==="organizer"or"admin")
                 <a href="{{ route('dashboard') }}" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 transition duration-200">
             Dashboard
           </a>

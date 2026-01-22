@@ -15,7 +15,16 @@ use Illuminate\Support\Facades\Storage;
 class EventController extends Controller
 {
     public function index(){
-        $events=Event::all();
+        $events=null;
+        if(Auth::user()->role ==='admin'){
+            $events=Event::all();
+        }
+        else{
+        $organizer=Auth::user()->organizer->id;
+        $events=Event::where('organizer_id',$organizer)->get();
+        }
+
+        // return $events;
         return view('admin.event.event', compact('events'));
     }
 
@@ -38,7 +47,7 @@ class EventController extends Controller
                 "venue"=>"required",
                 "category"=>"required",
                 "price"=>"required",
-                "user_id"=>'required',
+                "organizer_id"=>'required',
                 "status"=>"in:published,unpublished",
                 "image"=>"nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
             ]);
@@ -61,7 +70,7 @@ class EventController extends Controller
         $event->venue_id=$request->venue;
         $event->category_id=$request->category;
         $event->price=$request->price;
-        $event->organizer_id=$request->user_id;
+        $event->organizer_id=$request->organizer_id;
         $event->image=$imagePath;
         $event->save();
         return redirect(route('event.index'))->with('success','Event created successfully');
@@ -83,7 +92,7 @@ class EventController extends Controller
                 "venue"=>"required",
                 "category"=>"required",
                 "price"=>"required",
-                "status"=>"required|in:published,unpublished",
+                "status"=>"in:published,unpublished",
                 "image"=>"nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
             ]);
 
@@ -97,7 +106,16 @@ class EventController extends Controller
         $event->date=$request->date;
         $event->venue_id=$request->venue;
         $event->category_id=$request->category;
-        $event->status=$request->status;
+        $status=null;
+        if($request->status)
+        {
+            $status=$request->status;
+        }
+        else
+        {
+            $status="unpublished";
+        }
+        $event->status=$status;
         $event->price=$request->price;
         if($imagePath){
             $event->image=$imagePath;

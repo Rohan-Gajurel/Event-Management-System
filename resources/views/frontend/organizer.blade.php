@@ -1,4 +1,5 @@
-<x-guest-layout>
+@extends('frontend.layout')
+@section("content")
     <h2 class="text-2xl font-bold mb-6 text-center">Organizer Detail</h2>
     @if($errors->any())
             <div class="bg-red-100 text-sm text-red-700 rounded-md p-4 m-4" role="alert">
@@ -65,4 +66,4 @@
     </form>
         
 
-</x-guest-layout>
+@endsection

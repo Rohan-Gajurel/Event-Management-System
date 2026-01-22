@@ -16,7 +16,7 @@ class OrganizerController extends Controller
         return view('admin.organizer.organizer', compact('organizers'));
     }
 
-    public function front(){
+    public function form(){
         return view('frontend.organizer');
     }
 
@@ -40,7 +40,7 @@ class OrganizerController extends Controller
         $organizer->type=$request->type;
         $organizer->address=$request->address;
         $organizer->save();
-        return redirect(route('organizer.index'));
+        return redirect(route('dashboard'));
     }
 
     public function edit($id){

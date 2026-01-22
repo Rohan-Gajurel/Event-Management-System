@@ -71,11 +71,11 @@ Route::prefix('user')->middleware(['auth','verified','admin'])->controller(UserC
     Route::delete('/{id}', 'destroy')->name('user.delete');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/admin', function () {
     return redirect(route("event.index"));
-})->middleware(Organizer::class)->name('dashboard');
+})->middleware(['auth','verified','organizer'])->name('dashboard');
 
-Route::prefix('ticket')->middleware(['auth'])->controller(TicketController::class)->group(function()
+Route::prefix('ticket')->middleware(['auth','organizer'])->controller(TicketController::class)->group(function()
 {
     Route::get('/','index')->name('ticket.index');
     Route::get('/create', 'create' )->name('ticket.create');
@@ -103,15 +103,23 @@ Route::controller(SocialiteController::class)->group(function(){
     Route::get('auth/{provider}/callback','socialAuthentication')->name('auth.callback');
 
 });
+Route::prefix('organizer')
+->middleware(['auth'])
+->controller(OrganizerController::class)->group(function () {
+    Route::post('/', 'store')->name('organizer.store');
+    Route::get('/form', 'form')->name('organizer.form');
+});
 
-Route::prefix('organizer')->middleware(['auth'])->controller(OrganizerController::class)->group(function () {
+Route::prefix('organizer')
+->middleware(['auth','verified','organizer'])
+->controller(OrganizerController::class)->group(function () {
     Route::get('/','index')->name('organizer.index');
     Route::get('/create', 'create' )->name('organizer.create');
-    Route::post('/', 'store')->name('organizer.store');
     Route::get('/{id}', 'edit')->name('organizer.edit');
     Route::put('/{id}', 'update')->name('organizer.update');
     Route::delete('/{id}', 'destroy')->name('organizer.delete');
-    Route::get('/front','front')->name('organizer.front');
 });
+
+
 
 require __DIR__.'/auth.php';

@@ -42,12 +42,15 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role'=>$request->role,
         ]);
-
+        
         event(new Registered($user));
 
         Auth::login($user);
-        if(Auth::user()->role='organizer'){
-            return redirect(route('organizer.front'));
+        if(Auth::user()->role !='organizer'){
+            return redirect()->route('event_list');
+        }
+        else{
+            return redirect()->route('organizer.form');
         }
         return redirect(route('dashboard', absolute: false));
     }

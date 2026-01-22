@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         'admin' => \App\Http\Middleware\Admin::class,
     ]);
 })
+->withMiddleware(function ($middleware) {
+    $middleware->alias([
+        'organizer' => \App\Http\Middleware\Organizer::class,
+    ]);
+})
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
