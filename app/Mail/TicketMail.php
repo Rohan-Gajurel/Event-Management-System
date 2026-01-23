@@ -2,9 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Ticket;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,9 +15,14 @@ class TicketMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public Ticket $ticket,)
+    public $ticket;
+    // public $qrcode;
+
+    public function __construct($ticket)
     {
-        //
+        $this->ticket = $ticket;
+        // $this->qrcode=$qrcode;
+
     }
 
     /**

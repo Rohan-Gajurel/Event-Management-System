@@ -1,66 +1,67 @@
 @extends('admin.layout')
 @section('content')
 
-    <div class="bg-white p-6 rounded-lg shadow">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">All Organizer</h2>
-        <a href="{{ route('organizer.create') }}" ><button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-800">Create</button></a>
-      </div>
-       @if (session('success'))
-    <div class="bg-green-400 text-sm text-white rounded-md p-4" role="alert">
-        <span class="font-bold">{{ session('success')}}</span> 
-    </div>
-    @elseif(session('delete_message'))
-    <div class="bg-red-400 text-sm text-white rounded-md p-4" role="alert">
-        <span class="font-bold">{{ session('delete_message')}}</span>
-    </div>
-    @elseif(session('update_message'))
-    <div class="bg-yellow-400 text-sm text-white rounded-md p-4" role="alert">
-        <span class="font-bold">{{ session('update_message')}}</span>
-    </div>
-    @endif
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr>
-            <th class="border p-2">SN</th>
-            <th class="border p-2">Name</th>
-            <th class="border p-2">Type</th>
-            <th class="border p-2">Address</th>
-            <th class="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php $i=1; ?> 
-         @foreach ($organizers as $organizer )
-          <tr>
-            
-            <td class="border p-2">{{$i}}</td>
-            <td class="border p-2">{{$organizer->user->name}}</td>
-            <td class="border p-2">{{$organizer->type }}</td>
-            <td class="border p-2">{{$organizer->address}}</td>      
-            <td class="border p-2">
-                <div class="flex gap-2">
-                    <a href="{{ route('organizer.edit', $organizer->id) }}">
-                        <button class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
-                            Edit
-                        </button>
-                    </a>
-                    
-                    <form action="{{ route('organizer.delete', $organizer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"  
-                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-                            Delete
-                        </button>
-                    </form>
+    <div class="card">
+        <div class="card-body">
+            <div class="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-extrabold tracking-tight text-slate-900">Organizers</h2>
+                    <p class="mt-1 text-sm text-slate-600">Manage organizer profiles.</p>
                 </div>
-            </td>
-           
-          </tr>
-           <?php $i++ ?>
-          @endforeach
-        </tbody>
-      </table>
+                <a href="{{ route('organizer.create') }}" class="btn btn-primary">Create organizer</a>
+            </div>
+
+            <div class="mt-6 space-y-3">
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        <span class="font-semibold">{{ session('success') }}</span>
+                    </div>
+                @elseif(session('delete_message'))
+                    <div class="alert alert-danger" role="alert">
+                        <span class="font-semibold">{{ session('delete_message') }}</span>
+                    </div>
+                @elseif(session('update_message'))
+                    <div class="alert alert-warning" role="alert">
+                        <span class="font-semibold">{{ session('update_message') }}</span>
+                    </div>
+                @endif
+            </div>
+
+            <div class="mt-6">
+                <table class="table w-full table-fixed">
+                    <thead>
+                        <tr>
+                            <th class="w-16">SN</th>
+                            <th>Name</th>
+                            <th class="w-32">Type</th>
+                            <th class="hidden lg:table-cell">Address</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i=1; ?>
+                        @foreach ($organizers as $organizer)
+                            <tr>
+                                <td class="font-semibold text-slate-900">{{ $i }}</td>
+                                <td class="font-semibold text-slate-900 break-words">{{ $organizer->user->name }}</td>
+                                <td>{{ $organizer->type }}</td>
+                                <td class="hidden lg:table-cell text-slate-700 break-words">{{ $organizer->address }}</td>
+                                <td class="text-right">
+                                    <div class="inline-flex items-center gap-2">
+                                        <a href="{{ route('organizer.edit', $organizer->id) }}" class="btn btn-soft">Edit</a>
+                                        <form action="{{ route('organizer.delete', $organizer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this organizer?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php $i++ ?>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection

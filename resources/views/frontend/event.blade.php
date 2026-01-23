@@ -1,33 +1,61 @@
 @extends('frontend.layout')
 @section("content")
 
-  <!-- Event Listing -->
-  <section id="events" class="py-12 container mx-auto">
-    <h2 class="text-3xl font-bold mb-6">All Events</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-      
-      <!-- Event Card Example -->
-      @foreach ($events as $event )
-      <div class="bg-white rounded shadow p-4">
-        <img src="{{ asset('storage/'.$event->image) }}" alt="" class="w-[300px] h-[300px] object-cover rounded-md">
-        <h3 class="text-xl font-bold mb-2">{{$event->name}}</h3>
-        <p class="text-gray-600 mb-2">Venue: {{$event->venue->name}}</p>
-        <p class="text-gray-600 mb-2">Category: {{$event->category->name}}</p>
-        <p class="text-gray-800 font-semibold mb-2">${{$event->price}}</p>
-        <a href="{{ route('event.detail',$event->id )}}" class="inline mt-2 px-4 py-2 w-100 bg-blue-600 text-white rounded text-center">View Details</a>
-        @if( $event->date<now() )
-        <a href="" class="inline mt-2 px-4 py-2 w-100 bg-yellow-400 text-white rounded text-center">Sold Out</a>
-        @else
-        <a href="{{ route('ticket-form', $event->id ) }}" class="inline mt-2 px-4 py-2 w-100 bg-green-600 text-white rounded text-center">Buy Now</a>
-        @endif
-      </div>   
-      @endforeach
-      
-    
-      <!-- Repeat cards dynamically from backend -->
-      
-    </div>
-  </section>
+    <section class="page-section">
+        <div class="container-page">
+            <div class="flex items-end justify-between gap-6">
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">All Events</h1>
+                    <p class="mt-1 text-sm text-slate-600">Explore everything that’s happening.</p>
+                </div>
+                <a href="{{ route('event_list') }}" class="btn btn-soft hidden sm:inline-flex">Back home</a>
+            </div>
+
+            <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach ($events as $event)
+                    <div class="card card-hover overflow-hidden">
+                        <div class="aspect-[4/3] w-full bg-slate-100">
+                            <img
+                                src="{{ asset('storage/'.$event->image) }}"
+                                alt="{{ $event->name }}"
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            >
+                        </div>
+
+                        <div class="card-body">
+                            <div class="flex items-start justify-between gap-3">
+                                <h3 class="text-lg font-bold leading-snug text-slate-900">{{ $event->name }}</h3>
+                                @if($event->date < now())
+                                    <span class="badge badge-warning">Ended</span>
+                                @else
+                                    <span class="badge badge-success">Upcoming</span>
+                                @endif
+                            </div>
+
+                            <div class="mt-2 space-y-1 text-sm text-slate-600">
+                                <p><span class="font-semibold text-slate-800">Venue:</span> {{ $event->venue->name }}</p>
+                                <p><span class="font-semibold text-slate-800">Category:</span> {{ $event->category->name }}</p>
+                            </div>
+
+                            <div class="mt-4 flex items-center justify-between">
+                                <p class="text-base font-extrabold text-slate-900">Rs. {{ $event->price }}</p>
+                                <a href="{{ route('event.detail', $event->id) }}" class="btn btn-soft">Details</a>
+                            </div>
+
+                            <div class="mt-3">
+                                @if($event->date < now())
+                                    <button type="button" class="btn btn-soft w-full" disabled>Sold Out</button>
+                                @else
+                                    <a href="{{ route('ticket-form', $event->id) }}" class="btn btn-primary w-full">Buy Now</a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
 @endsection
 

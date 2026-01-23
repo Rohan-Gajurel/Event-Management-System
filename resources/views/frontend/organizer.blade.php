@@ -1,69 +1,63 @@
 @extends('frontend.layout')
 @section("content")
-    <h2 class="text-2xl font-bold mb-6 text-center">Organizer Detail</h2>
-    @if($errors->any())
-            <div class="bg-red-100 text-sm text-red-700 rounded-md p-4 m-4" role="alert">
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+    <section class="page-section">
+        <div class="container-page">
+            <div class="mx-auto max-w-xl">
+                <div class="mb-6 text-center">
+                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Organizer Details</h2>
+                    <p class="mt-1 text-sm text-slate-600">Complete your organizer profile.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        @if($errors->any())
+                            <div class="alert alert-danger mb-6" role="alert">
+                                <ul class="list-disc list-inside">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('organizer.store') }}" method="POST" class="space-y-5">
+                            @csrf
+
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-900">Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value="{{ auth()->user()->name }}"
+                                    class="mt-2 input"
+                                    readonly
+                                >
+                                <x-input-error :messages="$errors->get('name')" class="mt-1" />
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-900">Type</label>
+                                <select name="type" required class="mt-2 select">
+                                    <option value="" disabled selected>Select Type</option>
+                                    <option value="individual">Individual</option>
+                                    <option value="company">Company</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('type')" class="mt-1" />
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-900">Address</label>
+                                <input type="text" name="address" placeholder="Address" class="mt-2 input">
+                                <x-input-error :messages="$errors->get('address')" class="mt-1" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-full">Submit</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-    @endif
-
-    <form action="{{ route('organizer.store') }}" method="POST" class="space-y-5">
-        @csrf
-
-        <!-- Name -->
-        <div>
-            <input
-                type="text"
-                name="name"
-                placeholder="{{ auth()->user()->name }}"
-                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
-            readonly >
-            <x-input-error :messages="$errors->get('name')" class="mt-1" />
         </div>
-
-        <!-- Type -->
-        <div>
-            <select
-                name="type"
-                required
-                class="w-full rounded-lg border-gray-300 p-3 bg-white focus:border-green-500 focus:ring-green-500"
-            >
-                <option value="" disabled selected>Select Type</option>
-                <option value="individual" >
-                    Individual
-                </option>
-                <option value="company" >
-                    Company
-                </option>
-            </select>
-            <x-input-error :messages="$errors->get('role')" class="mt-1" />
-        </div>
-
-        
-
-        <!-- Address -->
-        <div>
-            <input
-                type="text"
-                name="address"
-                placeholder="Address"
-                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
-            >
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
-        </div>
-
-        <!-- Submit -->
-        <button
-            type="submit"
-            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
-        >
-            Submit
-        </button>
-    </form>
+    </section>
         
 
 @endsection

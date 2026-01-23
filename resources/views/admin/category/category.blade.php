@@ -1,66 +1,67 @@
 @extends('admin.layout')
 @section('content')
 
-    <div class="bg-white p-6 rounded-lg shadow">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">All Categories</h2>
-        <a href="{{ route('category.create') }}" ><button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-800">Create</button></a>
-      </div>
-       @if (session('success'))
-    <div class="bg-green-400 text-sm text-white rounded-md p-4" role="alert">
-        <span class="font-bold">{{ session('success')}}</span> 
-    </div>
-    @elseif(session('delete_message'))
-    <div class="bg-red-400 text-sm text-white rounded-md p-4" role="alert">
-        <span class="font-bold">{{ session('delete_message')}}</span>
-    </div>
-    @elseif(session('update_message'))
-    <div class="bg-yellow-400 text-sm text-white rounded-md p-4" role="alert">
-        <span class="font-bold">{{ session('update_message')}}</span>
-    </div>
-    @endif
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr>
-            <th class="border p-2">SN</th>
-            <th class="border p-2">Category</th>
-            @if(Auth::user()->role=="admin")
-            <th class="border p-2">Actions</th>
-            @endif
-          </tr>
-        </thead>
-        <tbody>
-        <?php $i=1; ?> 
-         @foreach ($categories as $category )
-          <tr>
-            
-            <td class="border p-2">{{$i}}</td>
-            <td class="border p-2">{{$category->name}}</td>
-            @if(Auth::user()->role=="admin")
-            <td class="border p-2">
-                <div class="flex gap-2">
-                    <a href="{{ route('category.edit', $category->id) }}">
-                        <button class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
-                            Edit
-                        </button>
-                    </a>
-
-                    <form action="{{ route('category.delete', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-                            Delete
-                        </button>
-                    </form>
+    <div class="card">
+        <div class="card-body">
+            <div class="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-extrabold tracking-tight text-slate-900">Categories</h2>
+                    <p class="mt-1 text-sm text-slate-600">Organize events by category.</p>
                 </div>
-            </td>
-            @endif
-           
-          </tr>
-           <?php $i++ ?>
-          @endforeach
-        </tbody>
-      </table>
+                <a href="{{ route('category.create') }}" class="btn btn-primary">Create category</a>
+            </div>
+
+            <div class="mt-6 space-y-3">
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        <span class="font-semibold">{{ session('success') }}</span>
+                    </div>
+                @elseif(session('delete_message'))
+                    <div class="alert alert-danger" role="alert">
+                        <span class="font-semibold">{{ session('delete_message') }}</span>
+                    </div>
+                @elseif(session('update_message'))
+                    <div class="alert alert-warning" role="alert">
+                        <span class="font-semibold">{{ session('update_message') }}</span>
+                    </div>
+                @endif
+            </div>
+
+            <div class="mt-6 overflow-x-auto">
+                <table class="table min-w-[700px]">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Category</th>
+                            @if(Auth::user()->role=="admin")
+                                <th class="text-right">Actions</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i=1; ?>
+                        @foreach ($categories as $category)
+                            <tr>
+                                <td class="font-semibold text-slate-900">{{ $i }}</td>
+                                <td class="font-semibold text-slate-900">{{ $category->name }}</td>
+                                @if(Auth::user()->role=="admin")
+                                    <td class="text-right">
+                                        <div class="inline-flex items-center gap-2">
+                                            <a href="{{ route('category.edit', $category->id) }}" class="btn btn-soft">Edit</a>
+                                            <form action="{{ route('category.delete', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                @endif
+                            </tr>
+                            <?php $i++ ?>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection

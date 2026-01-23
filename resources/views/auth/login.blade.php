@@ -45,27 +45,55 @@
         </div>
     </form> --}}
 
-        <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-        <form action="{{ route('login') }}" method="POST" class="space-y-4">
+        <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Welcome back</h2>
+        <p class="mt-1 text-sm text-slate-600">Login to continue.</p>
+
+        <form action="{{ route('login') }}" method="POST" class="mt-6 space-y-4">
         @csrf
         <div>
-            <input type="email" name="email" placeholder="Email" class="w-full p-3 border rounded">
+            <label class="block text-sm font-semibold text-slate-900">Email</label>
+            <input type="email" name="email" placeholder="you@example.com" class="mt-2 input" value="{{ old('email') }}" required autofocus autocomplete="username">
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
             
         </div>
 
         <div>
-            <input type="password" name="password" placeholder="Password" class="w-full p-3 border rounded">
+            <label class="block text-sm font-semibold text-slate-900">Password</label>
+            <input type="password" name="password" placeholder="••••••••" class="mt-2 input" required autocomplete="current-password">
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition">Login</button>
-        </form>
-            <a href="{{ route('auth.redirection','google') }}" class="inline-block"><img src="{{ asset('build/assets/gogole-logo.jpg') }}" alt="" height="50" width="50"></a>
-            <a href="{{ route('auth.redirection','facebook') }}" class="inline-block rounded"><img src="{{ asset('build/assets/facebook-logo.jpg') }}" alt="" height="50" width="50"></a>
+        <div class="flex items-center justify-between">
+            <label class="inline-flex items-center gap-2 text-sm text-slate-700">
+                <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" name="remember">
+                Remember me
+            </label>
 
-        <p class="mt-4 text-center">Don't have an account? 
-            <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Register</a>
+            @if (Route::has('password.request'))
+                <a href="{{ route('password.request') }}" class="text-sm font-semibold text-indigo-700 hover:text-indigo-800">
+                    Forgot password?
+                </a>
+            @endif
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full">Login</button>
+        </form>
+        <div class="mt-6 flex items-center justify-center gap-3">
+            <a href="{{ route('auth.redirection','google') }}" class="btn btn-soft">
+                <span class="sr-only">Continue with Google</span>
+                <img src="{{ asset('build/assets/gogole-logo.jpg') }}" alt="Google" height="20" width="20">
+                Google
+            </a>
+            <a href="{{ route('auth.redirection','facebook') }}" class="btn btn-soft">
+                <span class="sr-only">Continue with Facebook</span>
+                <img src="{{ asset('build/assets/facebook-logo.jpg') }}" alt="Facebook" height="20" width="20">
+                Facebook
+            </a>
+        </div>
+
+        <p class="mt-6 text-center text-sm text-slate-600">
+            Don't have an account?
+            <a href="{{ route('register') }}" class="font-semibold text-indigo-700 hover:text-indigo-800">Register</a>
         </p>
 
 </x-guest-layout>

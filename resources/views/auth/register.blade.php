@@ -50,63 +50,69 @@
         </div>
     </form> --}}
 
-    <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
+    <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Create account</h2>
+    <p class="mt-1 text-sm text-slate-600">Join and start booking events.</p>
 
-    <form action="{{ route('register') }}" method="POST" class="space-y-5">
+    <form action="{{ route('register') }}" method="POST" class="mt-6 space-y-5">
         @csrf
 
         <!-- Name -->
         <div>
+            <label class="block text-sm font-semibold text-slate-900">Full name</label>
             <input
                 type="text"
                 name="name"
                 placeholder="Full Name"
                 value="{{ old('name') }}"
-                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+                class="mt-2 input"
             >
             <x-input-error :messages="$errors->get('name')" class="mt-1" />
         </div>
 
         <!-- Email -->
         <div>
+            <label class="block text-sm font-semibold text-slate-900">Email</label>
             <input
                 type="email"
                 name="email"
                 placeholder="Email Address"
                 value="{{ old('email') }}"
-                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+                class="mt-2 input"
             >
             <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
         <!-- Password -->
         <div>
+            <label class="block text-sm font-semibold text-slate-900">Password</label>
             <input
                 type="password"
                 name="password"
                 placeholder="Password"
-                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+                class="mt-2 input"
             >
             <x-input-error :messages="$errors->get('password')" class="mt-1" />
         </div>
 
         <!-- Confirm Password -->
         <div>
+            <label class="block text-sm font-semibold text-slate-900">Confirm password</label>
             <input
                 type="password"
                 name="password_confirmation"
                 placeholder="Confirm Password"
-                class="w-full rounded-lg border-gray-300 p-3 focus:border-green-500 focus:ring-green-500"
+                class="mt-2 input"
             >
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
         </div>
 
         <!-- Role -->
         <div>
+            <label class="block text-sm font-semibold text-slate-900">Role</label>
             <select
                 name="role"
                 required
-                class="w-full rounded-lg border-gray-300 p-3 bg-white focus:border-green-500 focus:ring-green-500"
+                class="mt-2 select"
             >
                 <option value="" disabled selected>Select Role</option>
                 <option value="organizer" >
@@ -120,19 +126,24 @@
         </div>
 
         <!-- Submit -->
-        <button
-            type="submit"
-            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition"
-        >
-            Register
-        </button>
+        <button type="submit" class="btn btn-primary w-full">Register</button>
     </form>
-        <a href="{{ route('auth.redirection','google') }}" class="inline-block"><img src="{{ asset('build/assets/gogole-logo.jpg') }}" alt="" height="50" width="50"></a>
-        <a href="{{ route('auth.redirection','facebook') }}" class="inline-block rounded"><img src="{{ asset('build/assets/facebook-logo.jpg') }}" alt="" height="50" width="50"></a>
+    <div class="mt-6 flex items-center justify-center gap-3">
+        <a href="{{ route('auth.redirection','google') }}" class="btn btn-soft">
+            <span class="sr-only">Continue with Google</span>
+            <img src="{{ asset('build/assets/gogole-logo.jpg') }}" alt="Google" height="20" width="20">
+            Google
+        </a>
+        <a href="{{ route('auth.redirection','facebook') }}" class="btn btn-soft">
+            <span class="sr-only">Continue with Facebook</span>
+            <img src="{{ asset('build/assets/facebook-logo.jpg') }}" alt="Facebook" height="20" width="20">
+            Facebook
+        </a>
+    </div>
 
-    <p class="mt-6 text-center text-sm">
+    <p class="mt-6 text-center text-sm text-slate-600">
         Already have an account?
-        <a href="{{ route('login') }}" class="text-green-600 hover:underline font-medium">
+        <a href="{{ route('login') }}" class="font-semibold text-indigo-700 hover:text-indigo-800">
             Login
         </a>
     </p>
