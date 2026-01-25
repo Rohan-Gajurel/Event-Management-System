@@ -30,7 +30,7 @@ class SocialiteController extends Controller
 
         if ($user) {
             Auth::login($user);
-            return redirect()->route('login');
+            return redirect()->route('event_list');
         }
 
         $user = User::create([
@@ -40,10 +40,10 @@ class SocialiteController extends Controller
             'auth_provider_id' => $socialUser->getId(),
             "auth_provider"=>$provider
         ]);
-
+        
         Auth::login($user);
+        return redirect()->route('profile.create');
 
-        return redirect()->route('login');
 
         }
         abort(404);

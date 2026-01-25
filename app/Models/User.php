@@ -57,8 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function organizer(): HasOne
+    public function profile(): HasOne
     {
-        return $this->hasOne(ModelsOrganizer::class);
+        return $this->hasOne(Profile::class);
     }
 }

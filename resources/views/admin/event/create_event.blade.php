@@ -72,10 +72,10 @@
 
                         <div>
                             <label class="block text-sm font-semibold text-slate-900">Organizer</label>
-                            <select class="mt-2 select" name="user_id" required>
+                            <select class="mt-2 select" name="organizer_id" required>
                                 <option disabled selected>Select User</option>
                                 @foreach ($organizers as $organizer)
-                                    <option value="{{ $organizer->id }}">{{ $organizer->user->name }}</option>
+                                    <option value="{{ $organizer->profile->id }}">{{ $organizer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -85,7 +85,7 @@
                         <div class="md:col-span-2">
                             <label class="block text-sm font-semibold text-slate-900">Organizer</label>
                             <input type="text" value="{{ auth()->user()->name }}" class="mt-2 input" readonly>
-                            <input type="hidden" name="organizer_id" value="{{ auth()->user()->organizer->id }}">
+                            <input type="hidden" name="organizer_id" value="{{ auth()->user()->profile->id }}">
                         </div>
                     @endif
 

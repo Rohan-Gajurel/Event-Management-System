@@ -107,7 +107,7 @@
         </div>
 
         <!-- Role -->
-        <div>
+        {{-- <div>
             <label class="block text-sm font-semibold text-slate-900">Role</label>
             <select
                 name="role"
@@ -123,7 +123,7 @@
                 </option>
             </select>
             <x-input-error :messages="$errors->get('role')" class="mt-1" />
-        </div>
+        </div> --}}
 
         <!-- Submit -->
         <button type="submit" class="btn btn-primary w-full">Register</button>

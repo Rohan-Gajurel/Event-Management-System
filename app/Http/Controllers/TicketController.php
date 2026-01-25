@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\TicketMail;
 use App\Models\Event;
 use App\Models\Ticket;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -22,8 +23,8 @@ class TicketController extends Controller
         if (Auth::user()->role === 'admin') {
             $tickets = Ticket::all();
         } else {
-            $organizer = Auth::user()->organizer->id;
-            $event = Event::where('organizer_id', $organizer)->pluck('id');
+            $organizer = Auth::user()->profile->id;
+            $event = Event::where('profile_id', $organizer)->pluck('id');
             $tickets = Ticket::whereIn('event_id', $event)->get();
         }
 
@@ -104,11 +105,15 @@ class TicketController extends Controller
 
             Storage::disk('public')->put($qrStoragePath, $qrcodeContent);
 
-            $ticket->qr = $qrStoragePath;
             $ticket->save();
 
-            Mail::to($ticket->user->email)->send(new TicketMail($ticket));
-        }
+//             $pdf=Pdf::loadView('frontend.mail_pdf',[
+//     'ticket' => $ticket,
+//     'qr'=> $qrcodeContent
+// ]);
+//    return $pdf->download('ticket-'.$ticket->id.'.pdf');
+
+      Mail::to($ticket->user->email)->send(new TicketMail($ticket, $pdf->output()));        }
 
         return redirect(route('ticket.index'))->with('update_message', 'Ticket updated successfully');
     }

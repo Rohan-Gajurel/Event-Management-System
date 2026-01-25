@@ -24,19 +24,33 @@ Route::get('/qr', function () {
 
 });
 
+Route::prefix('profile')->controller(ProfileController::class)->group(function () {
+        Route::get('/', 'index')->name('user_profile');
+        Route::get('/create','create')->name('profile.create');
+        Route::post('/','store')->name('profile.store');
+        Route::get('/edit','edit')->name('profile.edit');
+        Route::put('/update','update')->name('profile.update');
+    });
+
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 // Route::get('/admin', function () {
 //     return view('admin.layout');
 // })->middleware(['auth'])->name('dashboard');
+Route::prefix('users')->middleware(['auth', 'verified', 'admin'])->controller(UserController::class)->group(function () {
+    Route::get('/', 'index')->name('user.index');
+    Route::get('/{id}', 'edit')->name('user.edit');
+    Route::put('/{id}', 'update')->name('user.update');
+    Route::delete('/{id}', 'destroy')->name('user.delete');
+});
 
 Route::prefix('category')->middleware(['auth', 'verified'])->controller(CategoryController::class)->group(function () {
     Route::get('/', 'index')->name('category.index');
@@ -66,12 +80,7 @@ Route::prefix('event')->middleware(['auth', 'verified'])->controller(EventContro
 
 });
 
-Route::prefix('user')->middleware(['auth', 'verified', 'admin'])->controller(UserController::class)->group(function () {
-    Route::get('/', 'index')->name('user.index');
-    Route::get('/{id}', 'edit')->name('user.edit');
-    Route::put('/{id}', 'update')->name('user.update');
-    Route::delete('/{id}', 'destroy')->name('user.delete');
-});
+
 
 Route::get('/admin', function () {
     return redirect(route('event.index'));
@@ -102,18 +111,19 @@ Route::controller(SocialiteController::class)->group(function () {
     Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.callback');
 
 });
-Route::prefix('organizer')
-    ->middleware(['auth'])
-    ->controller(OrganizerController::class)->group(function () {
-        Route::post('/', 'store')->name('organizer.store');
-        Route::get('/form', 'form')->name('organizer.form');
-    });
+
+Route::prefix('user')->middleware(['auth'])->controller(UserController::class)->group(function () {
+    Route::get('/', 'role_show')->name('user.show_role');
+    Route::put('/', 'submit_role')->name('user.role_submit');
+});
+
+
+
 
 Route::prefix('organizer')
     ->middleware(['auth', 'verified', 'organizer'])
     ->controller(OrganizerController::class)->group(function () {
         Route::get('/', 'index')->name('organizer.index');
-        Route::get('/create', 'create')->name('organizer.create');
         Route::get('/{id}', 'edit')->name('organizer.edit');
         Route::put('/{id}', 'update')->name('organizer.update');
         Route::delete('/{id}', 'destroy')->name('organizer.delete');

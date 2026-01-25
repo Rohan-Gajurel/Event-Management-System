@@ -8,7 +8,7 @@
                     <h2 class="text-xl font-extrabold tracking-tight text-slate-900">Organizers</h2>
                     <p class="mt-1 text-sm text-slate-600">Manage organizer profiles.</p>
                 </div>
-                <a href="{{ route('organizer.create') }}" class="btn btn-primary">Create organizer</a>
+                {{-- <a href="{{ route('organizer.create') }}" class="btn btn-primary">Create organizer</a> --}}
             </div>
 
             <div class="mt-6 space-y-3">
@@ -48,7 +48,7 @@
                                 <td class="hidden lg:table-cell text-slate-700 break-words">{{ $organizer->address }}</td>
                                 <td class="text-right">
                                     <div class="inline-flex items-center gap-2">
-                                        <a href="{{ route('organizer.edit', $organizer->id) }}" class="btn btn-soft">Edit</a>
+                                        <a href="{{ route('organizer.edit', $organizer->user->id) }}" class="btn btn-soft">Edit</a>
                                         <form action="{{ route('organizer.delete', $organizer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this organizer?');">
                                             @csrf
                                             @method('DELETE')

@@ -63,7 +63,7 @@
                                         <span class="badge badge-info">{{ $event->status }}</span>
                                     @endif
                                 </td>
-                                <td>{{ $event->organizer->user->name }}</td>
+                                <td>{{ $event->profile->user->name }}</td>
                                 <td>{{ $event->date }}</td>
                                 <td>{{ $event->venue->name }}</td>
                                 <td>{{ $event->category->name }}</td>

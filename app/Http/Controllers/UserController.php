@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -33,6 +34,31 @@ class UserController extends Controller
         $user=User::findOrFail($id);
         $user->delete();
         return redirect(route('user.index'))->with('delete_message','User deleted successfully');
+
+
+    }
+
+    public function role_show(){
+        return view('frontend.role');
+    }
+
+    public function submit_role(Request $request){
+        $request->validate([
+            'role'=>['required', 'in:organizer,participant'],
+        ]);
+        
+        $user_id=Auth::user()->id;
+        $user=User::findOrFail($user_id);
+        $user->role=$request->role;
+        $user->save();
+
+        if($user->role === "organizer"){
+            return redirect()->route('organizer.form');
+        }
+        else{
+            return redirect()->intended(route('event_list', absolute: false));
+        }
+
 
 
     }

@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Attachment;
 
 class TicketMail extends Mailable
 {
@@ -16,11 +17,13 @@ class TicketMail extends Mailable
      * Create a new message instance.
      */
     public $ticket;
+    public $pdf;
     // public $qrcode;
 
-    public function __construct($ticket)
+    public function __construct($ticket,$pdf)
     {
         $this->ticket = $ticket;
+        $this->pdf=$pdf;
         // $this->qrcode=$qrcode;
 
     }
@@ -52,6 +55,11 @@ class TicketMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        // return [
+        //     Attachment::fromData(
+        //     fn () => $this->pdf,
+        //     'ticket.pdf'
+        // )->withMime('application/pdf'),
+        // ];
     }
 }

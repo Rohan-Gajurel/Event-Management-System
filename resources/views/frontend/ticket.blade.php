@@ -51,15 +51,6 @@
         </tr>
       </table>
 
-    <p>Scan this for validity</p>
-<img src="data:image/png;base64,{{ $ticket->qr }}"
-     alt="Ticket QR Code"
-     width="200"
-     style="display:block;margin-top:10px;">   
-     {{-- <div>{!! $qrcode !!}</div> --}}
-     </td>
-  </tr>
-
   <!-- Footer -->
   <tr>
     <td style="background:#f9fafb;padding:15px;">

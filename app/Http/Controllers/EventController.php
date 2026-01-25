@@ -20,8 +20,8 @@ class EventController extends Controller
             $events=Event::all();
         }
         else{
-        $organizer=Auth::user()->organizer->id;
-        $events=Event::where('organizer_id',$organizer)->get();
+        $organizer=Auth::user()->profile->id;
+        $events=Event::where('profile_id',$organizer)->get();
         }
 
         // return $events;
@@ -32,7 +32,7 @@ class EventController extends Controller
     {
         $venues=Venue::all();
         $categories=Category::all();
-        $organizers=Organizer::all();
+        $organizers=User::where('role','organizer')->get();
         return view('admin.event.create_event', compact('venues', 'categories','organizers'));
     }
 
@@ -63,6 +63,12 @@ class EventController extends Controller
             $event->status="unpublished";
         }
 
+        $profileId=null;
+        if (Auth::user()->role === 'admin') {
+        $profileId = $request->organizer_id;
+        } else {
+        $profileId = Auth::user()->profile->id;
+        }
 
         $event->name=$request->event_name;
         $event->description=$request->description;
@@ -70,7 +76,17 @@ class EventController extends Controller
         $event->venue_id=$request->venue;
         $event->category_id=$request->category;
         $event->price=$request->price;
-        $event->organizer_id=$request->organizer_id;
+        $event->profile_id=$profileId;
+        $status=null;
+        if($request->status)
+        {
+            $status=$request->status;
+        }
+        else
+        {
+            $status="unpublished";
+        }
+        $event->status=$status;
         $event->image=$imagePath;
         $event->save();
         return redirect(route('event.index'))->with('success','Event created successfully');

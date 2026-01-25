@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('organizers', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->cascadeOnDelete();
+            $table->string('profile_image')->nullable();
             $table->enum('type', ['individual','company']);
+            $table->string('company_name')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
         });
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('organizers');
+        Schema::dropIfExists('profiles');
     }
 };

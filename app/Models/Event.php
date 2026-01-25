@@ -22,8 +22,8 @@ class Event extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function organizer()
+    public function profile()
     {
-        return $this->belongsTo(Organizer::class,'organizer_id');
+        return $this->belongsTo(Profile::class, 'profile_id');
     }
 }
