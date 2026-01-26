@@ -55,11 +55,11 @@ class TicketMail extends Mailable
      */
     public function attachments(): array
     {
-        // return [
-        //     Attachment::fromData(
-        //     fn () => $this->pdf,
-        //     'ticket.pdf'
-        // )->withMime('application/pdf'),
-        // ];
+        return [
+            Attachment::fromData(
+            fn () => $this->pdf,
+            'ticket.pdf'
+        )->withMime('application/pdf'),
+        ];
     }
 }

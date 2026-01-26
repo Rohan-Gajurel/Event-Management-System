@@ -15,12 +15,20 @@
         <div class="container-page">
         <!-- Profile Header -->
         <div class="flex flex-col sm:flex-row items-center gap-6">
-            <img
-                src="{{ asset('storage/'.$profile->profile_image) }}"
-                alt="User Avatar"
-                class="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-            />
 
+            @if(!empty($profile->profile_image))
+    <img
+        src="{{ asset('storage/' . $profile->profile_image) }}"
+        alt="User Avatar"
+        class="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
+    >
+    @else
+    <img
+        src="{{ asset('build/assets/avatar.jpg') }}"
+        alt="Default Avatar"
+        class="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
+    >
+    @endif      
             <div class="text-center sm:text-left">
                 <h2 class="text-2xl font-bold text-gray-800">
                     {{ $user->name }}

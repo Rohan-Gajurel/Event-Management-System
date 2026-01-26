@@ -10,8 +10,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+// use BaconQrCode\Renderer\Image\RendererStyle\RendererStyle;
+use BaconQrCode\Renderer\Image\GdImageBackEnd;
+use App\Http\Controllers\Writer;
+use GdImage;
+// use BaconQrCode\Renderer\Image\ImageBackEndInterface;
 use Pest\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Imagick;
 
 class TicketController extends Controller
 {
@@ -86,34 +94,22 @@ class TicketController extends Controller
 
         $ticketData = "Ticket ID: {$ticket->id}, Event: {$ticket->event->name}, Ticket Holder:{$ticket->user->name}, Quantiry: {$ticket->quantity}";
 
-        if ($ticket->status == 'released') {
-            // $ticketData = "Ticket ID: {$ticket->id}, Event: {$ticket->event->name}, Ticket Holder: {$ticket->user->name}, Quantity: {$ticket->quantity}";
-            // $qrFileName = 'ticket_'.$ticket->id.'_'.Str::random(6).'.png';
-            // $qrStoragePath = 'qr_image/' . $qrFileName;
+        if ($ticket->status == 'released') 
+        {
+        $ticketData = "Ticket ID: {$ticket->id}, Event: {$ticket->event->name}, Ticket Holder: {$ticket->user->name}, Quantity: {$ticket->quantity}";
 
-            // $qrcode=$qrcode=QrCode::format('png')->generate($ticketData);
+        $qr = (
+            QrCode::generate($ticketData)
+            );
+        
+        $ticket->save();
+        $pdf=Pdf::loadView('frontend.mail_pdf',[
+            'ticket' => $ticket,    
+            'qr'=>$qr    
+        ]);
 
-            // Storage::disk('public')->put($qrStoragePath, $qrcode);
-
-            // $ticket->qr = $qrStoragePath;
-            // $ticket->save();
-            $ticketData = "Ticket ID: {$ticket->id}, Event: {$ticket->event->name}, Ticket Holder: {$ticket->user->name}, Quantity: {$ticket->quantity}";
-            $qrFileName = 'ticket_'.$ticket->id.'_'.Str::random(6).'.png';
-            $qrStoragePath = 'qr_image/'.$qrFileName;
-
-            $qrcodeContent = QrCode::generate($ticketData);
-
-            Storage::disk('public')->put($qrStoragePath, $qrcodeContent);
-
-            $ticket->save();
-
-//             $pdf=Pdf::loadView('frontend.mail_pdf',[
-//     'ticket' => $ticket,
-//     'qr'=> $qrcodeContent
-// ]);
-//    return $pdf->download('ticket-'.$ticket->id.'.pdf');
-
-      Mail::to($ticket->user->email)->send(new TicketMail($ticket, $pdf->output()));        }
+        Mail::to($ticket->user->email)->send(new TicketMail($ticket, $pdf->output()));        
+    }
 
         return redirect(route('ticket.index'))->with('update_message', 'Ticket updated successfully');
     }
